@@ -8,6 +8,7 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-preset-kyt-react": "0.2.0",
+    "classnames": "^2.2.5",
     "html-webpack-plugin": "2.22.0",
     "immutable": "^3.8.1",
     "kyt": "0.8.0",

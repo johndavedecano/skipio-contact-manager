@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { login, logout } from 'state/modules/auth';
+import { check, logout } from 'state/modules/auth';
 
 export default function withAuthentication(Component) {
 	class AuthenticatedComponent extends React.Component {
@@ -18,7 +18,7 @@ export default function withAuthentication(Component) {
 				return this.goToLogin();
 			}
 
-			return this.props.login(this.props.token);
+			return this.props.check();
 		}
 
 		goToLogin() {
@@ -39,5 +39,5 @@ export default function withAuthentication(Component) {
 		token: localStorage.getItem('token')
 	});
 
-	return connect(mapStateToProps, { login, logout })(AuthenticatedComponent);
+	return connect(mapStateToProps, { check, logout })(AuthenticatedComponent);
 }

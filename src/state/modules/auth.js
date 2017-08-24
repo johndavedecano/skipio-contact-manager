@@ -5,7 +5,6 @@ import axios from 'axios';
 const LOGIN = 'LOGIN';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
-const LOGOUT_URL = '/auth/logout';
 const LOGOUT = 'LOGOUT';
 
 const initialState = Map({
@@ -17,26 +16,49 @@ const initialState = Map({
 
 const Logic = {};
 
-export function login(token) {
+export function resetAxios(dispatch, token) {
+	axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+	axios.defaults.params = { token };
+	axios.interceptors.response.use(undefined, error => {
+		if (error) {
+			const ERROR_STATUS_CODE = get(error, 'response.status');
+			if (ERROR_STATUS_CODE === 401) {
+				dispatch(logout());
+				window.location.replace('/login'); // HARD RERFRESH
+			}
+		}
+	});
+}
+
+export function check() {
 	return async (dispatch, getState, api) => {
 		dispatch({ type: LOGIN });
 		try {
-			const { data } = await api.get(`users/me?token=${token}`);
-
-			localStorage.setItem('token', token);
-
-			axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-			axios.interceptors.response.use(undefined, error => {
-				if (error) {
-					const ERROR_STATUS_CODE = get(error, 'response.status');
-					if (ERROR_STATUS_CODE === 401) {
-						store().dispatch(logout());
-						window.location.replace(LOGOUT_URL);
-					}
-				}
+			const { data } = await api.get('/users/me');
+			dispatch({ type: LOGIN_SUCCESS, user: fromJS(data.data) });
+			return true;
+		} catch (error) {
+			console.error(error);
+			dispatch({
+				type: LOGIN_FAILURE,
+				error: 'Unable to authenticate'
 			});
+			return false;
+		}
+	};
+}
+
+export function login(token, check = false) {
+	return async (dispatch, getState, api) => {
+		dispatch({ type: LOGIN });
+		try {
+			const { data } = await api.get(`/users/me?token=${token}`);
 
 			dispatch({ type: LOGIN_SUCCESS, user: fromJS(data.data) });
+
+			resetAxios(dispatch, token);
+
+			localStorage.setItem('token', token);
 
 			return true;
 		} catch (error) {

@@ -3,20 +3,35 @@
 
 :global
 {
-  body
-  {
-      padding-top: 5rem;
-  }
-  .starter-template
-  {
-      padding: 3rem 1.5rem;
+    body
+    {
+        padding-top: 5rem;
+    }
+    .starter-template
+    {
+        padding: 3rem 1.5rem;
 
-      text-align: center;
-  }
+        text-align: center;
+    }
 }
 
-.welcome {
-	color: white;
-	display:block;
-	padding-top: 10px;
+.navbar
+{
+    color: white !important;
+    background-color: #278ecd !important;
+    img
+    {
+        width: 100px;
+        height: auto;
+    }
+    a
+    {
+        color: white !important;
+    }
+    span
+    {
+        display: inline-block;
+
+        margin-top: 6px;
+    }
 }

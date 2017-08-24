@@ -4,6 +4,7 @@ import styles from './styles.scss';
 import { connect } from 'react-redux';
 import { login, logout } from 'state/modules/auth';
 import { withRouter } from 'react-router';
+import cx from 'classnames';
 
 @withRouter
 class App extends React.Component {
@@ -20,7 +21,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <nav className="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+        <nav
+          className={cx(
+            'navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top',
+            styles.navbar
+          )}
+        >
           <button
             className="navbar-toggler navbar-toggler-right"
             type="button"
