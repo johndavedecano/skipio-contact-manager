@@ -1,6 +1,6 @@
 # skipio-contact-manager
 
-#Installation
+## Installation
 
 ```
 npm install # or yarn install
